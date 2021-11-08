@@ -1,0 +1,37 @@
+version : '3.7'
+services: 
+  apache:
+    container_name : exo1_apache
+    hostname : exo1_apache
+    build : ./containers/apache
+    ports:
+      - '80:80'
+      - '443:443'
+    networks: 
+      - exo1-lamp
+    volumes:
+      - './src/:/usr/local/apache2/htdocs'
+      - './config/:/usr/local/apache2/conf/extra'
+
+  php: 
+    container_name : exo1_php
+    hostname : exo1_php
+    build : ./containers/php
+    networks: 
+      - exo1-lamp
+    volumes:
+      - './src/:/var/www/html'
+
+  mysql: 
+    container_name : exo1_mysql
+    hostname : exo1_mysql
+    build : ./containers/mysql
+    ports:
+      - '3306:3306'
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+    networks: 
+      - exo1-lamp
+  
+networks:
+  exo1-lamp: 
